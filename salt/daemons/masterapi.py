@@ -450,6 +450,11 @@ class RemoteFuncs:
                 # This is the list of funcs/modules!
                 if isinstance(self.opts["peer"][match], list):
                     perms.extend(self.opts["peer"][match])
+                # targets can be limited using a dict
+                elif isinstance(self.opts["peer"][match], dict):
+                    for tgt_match in self.opts["peer"][match]:
+                        if re.match(tgt_match, load["tgt"]):
+                            perms.extend(self.opts["peer"][match][tgt_match])
         if "," in load["fun"]:
             # 'arg': [['cat', '/proc/cpuinfo'], [], ['foo']]
             load["fun"] = load["fun"].split(",")

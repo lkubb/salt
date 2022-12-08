@@ -1331,6 +1331,11 @@ class AESFuncs(TransportMethods):
                 # This is the list of funcs/modules!
                 if isinstance(self.opts["peer"][match], list):
                     perms.extend(self.opts["peer"][match])
+                # targets can be limited using a dict
+                elif isinstance(self.opts["peer"][match], dict):
+                    for tgt_match in self.opts["peer"][match]:
+                        if re.match(tgt_match, clear_load["tgt"]):
+                            perms.extend(self.opts["peer"][match][tgt_match])
         if "," in clear_load["fun"]:
             # 'arg': [['cat', '/proc/cpuinfo'], [], ['foo']]
             clear_load["fun"] = clear_load["fun"].split(",")
