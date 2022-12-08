@@ -70,6 +70,20 @@ allow minions ending with foo.org access to the publisher.
 .. note::
     Functions are matched using regular expressions.
 
+By adding an additional layer you can limit the target hosts in addition to the
+accessible commands:
+
+.. code-block:: yaml
+
+    peer:
+      foo.example.com:
+        'db*':
+          - test.*
+          - pkg.*
+
+.. note::
+    Target hosts are matched using regular expressions.
+
 Peer Runner Communication
 =========================
 
