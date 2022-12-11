@@ -19,14 +19,14 @@ pytestmark = [
 ]
 
 
-@pytest.fixture()
+@pytest.fixture
 def gpghome(tmp_path):
     root = tmp_path / "gpghome"
     root.mkdir(mode=0o0700)
     try:
         yield root
     finally:
-        # Make sure we don't leave any gpg-agent's running behind
+        # Make sure we don't leave any gpg-agents running behind
         gpg_connect_agent = shutil.which("gpg-connect-agent")
         if gpg_connect_agent:
             gnupghome = root / ".gnupg"
@@ -57,7 +57,7 @@ def gpghome(tmp_path):
                 pass
 
 
-@pytest.fixture()
+@pytest.fixture
 def gpg(loaders, states, gpghome):
     try:
         yield states.gpg
@@ -65,12 +65,12 @@ def gpg(loaders, states, gpghome):
         pass
 
 
-@pytest.fixture()
+@pytest.fixture
 def key_a_fp():
     return "EF03765F59EE904930C8A781553A82A058C0C795"
 
 
-@pytest.fixture()
+@pytest.fixture
 def key_a_pub():
     return """\
 -----BEGIN PGP PUBLIC KEY BLOCK-----
@@ -88,12 +88,12 @@ pDEmK8EhJDvV/9o0lnhm/9w=
 -----END PGP PUBLIC KEY BLOCK-----"""
 
 
-@pytest.fixture()
+@pytest.fixture
 def gnupg(gpghome):
     return gnupglib.GPG(gnupghome=str(gpghome))
 
 
-@pytest.fixture()
+@pytest.fixture
 def gnupg_keyring(gpghome, keyring):
     return gnupglib.GPG(gnupghome=str(gpghome), keyring=keyring)
 
@@ -187,6 +187,13 @@ def test_gpg_present_keyring_trust_change(
     assert key_info[0]["trust"] == "u"
 
 
+def test_gpg_absent_no_changes(gpghome, gpg, gnupg, key_a_fp):
+    assert not gnupg.list_keys(keys=key_a_fp)
+    ret = gpg.absent(key_a_fp[-16:], gnupghome=str(gpghome))
+    assert ret.result
+    assert not ret.changes
+
+
 @pytest.mark.skip_unless_on_linux(
     reason="Complains about deleting private keys first when they are absent"
 )
@@ -228,3 +235,14 @@ def test_gpg_absent_from_keyring_delete_keyring(
     assert "removed" in ret.changes
     assert ret.changes["removed"] == keyring
     assert not Path(keyring).exists()
+
+
+@pytest.mark.usefixtures("pubkeys_present")
+def test_gpg_absent_test_mode_no_changes(gpghome, gpg, gnupg, key_a_fp):
+    assert gnupg.list_keys(keys=key_a_fp)
+    ret = gpg.absent(key_a_fp[-16:], gnupghome=str(gpghome), test=True)
+    assert ret.result is None
+    assert ret.changes
+    assert "deleted" in ret.changes
+    assert ret.changes["deleted"]
+    assert gnupg.list_keys(keys=key_a_fp)
