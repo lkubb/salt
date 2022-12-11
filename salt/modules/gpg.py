@@ -245,7 +245,7 @@ def search_keys(text, keyserver=None, user=None, gnupghome=None):
     gnupghome
         Specify the location where the GPG keyring and related files are stored.
 
-        .. versionadded:: 3006
+        .. versionadded:: 3007.0
 
     CLI Example:
 
@@ -299,7 +299,7 @@ def list_keys(user=None, gnupghome=None, keyring=None):
         Limit the operation to this specific keyring, specified as
         a local filesystem path.
 
-        .. versionadded:: 3006
+        .. versionadded:: 3007.0
 
     CLI Example:
 
@@ -356,7 +356,7 @@ def list_secret_keys(user=None, gnupghome=None, keyring=None):
         Limit the operation to this specific keyring, specified as
         a local filesystem path.
 
-        .. versionadded:: 3006
+        .. versionadded:: 3007.0
 
     CLI Example:
 
@@ -473,7 +473,7 @@ def create_key(
         Limit the operation to this specific keyring, specified as
         a local filesystem path.
 
-        .. versionadded:: 3006
+        .. versionadded:: 3007.0
 
     CLI Example:
 
@@ -577,7 +577,7 @@ def delete_key(
         Limit the operation to this specific keyring, specified as
         a local filesystem path.
 
-        .. versionadded:: 3006
+        .. versionadded:: 3007.0
 
     CLI Example:
 
@@ -688,7 +688,7 @@ def get_key(keyid=None, fingerprint=None, user=None, gnupghome=None, keyring=Non
         Limit the operation to this specific keyring, specified as
         a local filesystem path.
 
-        .. versionadded:: 3006
+        .. versionadded:: 3007.0
 
     CLI Example:
 
@@ -762,7 +762,7 @@ def get_secret_key(
         Limit the operation to this specific keyring, specified as
         a local filesystem path.
 
-        .. versionadded:: 3006
+        .. versionadded:: 3007.0
 
     CLI Example:
 
@@ -837,7 +837,7 @@ def import_key(text=None, filename=None, user=None, gnupghome=None, keyring=None
         Limit the operation to this specific keyring, specified as
         a local filesystem path.
 
-        .. versionadded:: 3006
+        .. versionadded:: 3007.0
 
     CLI Example:
 
@@ -926,7 +926,7 @@ def export_key(
         Limit the operation to this specific keyring, specified as
         a local filesystem path.
 
-        .. versionadded:: 3006
+        .. versionadded:: 3007.0
 
     CLI Example:
 
@@ -998,7 +998,7 @@ def receive_keys(keyserver=None, keys=None, user=None, gnupghome=None, keyring=N
         Limit the operation to this specific keyring, specified as
         a local filesystem path.
 
-        .. versionadded:: 3006
+        .. versionadded:: 3007.0
 
     CLI Example:
 
@@ -1078,13 +1078,13 @@ def trust_key(
     gnupghome
         Specify the location where the GPG keyring and related files are stored.
 
-        .. versionadded:: 3006
+        .. versionadded:: 3007.0
 
     keyring
         Limit the operation to this specific keyring, specified as
         a local filesystem path.
 
-        .. versionadded:: 3006
+        .. versionadded:: 3007.0
 
     CLI Example:
 
@@ -1215,7 +1215,7 @@ def sign(
         Limit the operation to this specific keyring, specified as
         a local filesystem path.
 
-        .. versionadded:: 3006
+        .. versionadded:: 3007.0
 
     CLI Example:
 
@@ -1298,7 +1298,7 @@ def verify(
         Limit the operation to this specific keyring, specified as
         a local filesystem path.
 
-        .. versionadded:: 3006
+        .. versionadded:: 3007.0
 
     CLI Example:
 
@@ -1410,7 +1410,7 @@ def encrypt(
         Limit the operation to this specific keyring, specified as
         a local filesystem path.
 
-        .. versionadded:: 3006
+        .. versionadded:: 3007.0
 
     CLI Example:
 
@@ -1518,7 +1518,7 @@ def decrypt(
         Limit the operation to this specific keyring, specified as
         a local filesystem path.
 
-        .. versionadded:: 3006
+        .. versionadded:: 3007.0
 
     CLI Example:
 
