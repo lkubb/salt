@@ -284,3 +284,92 @@ def absent(
 
     ret["comment"] = "\n".join(ret["comment"])
     return ret
+
+
+def verified(
+    name,
+    signature=None,
+    trustmodel=None,
+    signed_by_any=None,
+    signed_by_all=None,
+    user=None,
+    gnupghome=None,
+    keyring=None,
+):
+    """
+    Ensure a file signature is valid.
+
+    This is intended to provide a simple and explicit interface to
+    verify signatures for states, but does not actually modify anything.
+
+    You can act on the result of this state with ``onfail``/``require``
+    requisites in subsequent states.
+
+    .. versionadded:: 3007.0
+
+    name
+        Path to the file to verify. Required.
+
+    signature
+        Path to a detached signature.
+
+    trustmodel
+        Explicitly define the used trust model. One of:
+          - pgp
+          - classic
+          - tofu
+          - tofu+pgp
+          - direct
+          - always
+          - auto
+
+    user
+        Run GPG as this user. Defaults to Salt process user.
+        Passing the user as ``salt`` will set the GnuPG home directory to
+        ``/etc/salt/gpgkeys``.
+
+    gnupghome
+        Override GnuPG home directory.
+
+    keyring
+        Limit the operation to this specific keyring, specified as
+        a local filesystem path.
+
+    signed_by_any
+        A list of key fingerprints from which any valid signature
+        will mark verification as passed. If none of the provided
+        keys signed the data, verification will fail. Optional.
+        Note that this does not take into account trust.
+
+    signed_by_all
+        A list of key fingerprints whose signatures are required
+        for verification to pass. If a single provided key did
+        not sign the data, verification will fail. Optional.
+        Note that this does not take into account trust.
+
+    """
+    ret = {"name": name, "result": False, "changes": {}, "comment": []}
+    try:
+        res = __salt__["gpg.verify"](
+            filename=name,
+            signature=signature,
+            trustmodel=trustmodel,
+            signed_by_any=signed_by_any,
+            signed_by_all=signed_by_all,
+            user=user,
+            gnupghome=gnupghome,
+            keyring=keyring,
+        )
+    except FileNotFoundError as err:
+        res = {"res": False, "message": str(err)}
+    if not res["res"] and __opts__["test"]:
+        ret["result"] = None
+        ret["comment"] = (
+            "Could not verify file. Not failing because test mode is active. "
+            "You can ignore this message if you create files necessary files and "
+            "import necessary keys. Falure was:\n" + res["message"]
+        )
+        return ret
+    ret["result"] = res["res"]
+    ret["comment"] = res["message"]
+    return ret
