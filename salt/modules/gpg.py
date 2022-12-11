@@ -614,7 +614,7 @@ def delete_key(
     )
 
     def __delete_key(fingerprint, secret, use_passphrase):
-        if use_passphrase:
+        if secret and use_passphrase:
             gpg_passphrase = __salt__["pillar.get"]("gpg_passphrase")
             if not gpg_passphrase:
                 return "gpg_passphrase not available in pillar."
