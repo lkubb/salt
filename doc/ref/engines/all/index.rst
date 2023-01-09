@@ -28,4 +28,5 @@ engine modules
     stalekey
     test
     thorium
+    vault
     webhook
